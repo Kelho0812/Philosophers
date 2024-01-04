@@ -13,8 +13,10 @@ RM = rm -rf
 SDIR := src
 ODIR := obj
 
-SOURCES := 
-OBJECTS := $(patsubst $(SDIR)/%.c, $(ODIR)/%.o, $(SOURCES))
+SOURCES := main.c \
+			time.c \
+			error_handler.c
+OBJECTS := $(patsubst %.c,$(ODIR)/%.o,$(SOURCES))
 
 all : ${NAME}
 
