@@ -15,7 +15,8 @@ ODIR := obj
 
 SOURCES := main.c \
 			time.c \
-			error_handler.c
+			error_handler.c \
+			utils.c
 OBJECTS := $(patsubst %.c,$(ODIR)/%.o,$(SOURCES))
 
 all : ${NAME}
