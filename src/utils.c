@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 11:13:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/04 17:56:10 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/05 11:29:51 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 long	ft_atoi_change(const char *str);
 int		ft_isdigit(int n);
 
-void	arg_checker_parser(t_data *data, char **argv)
+void	initializer(t_data *data, char **argv)
 {
 	num_checker(argv);
 	data->n_phil = ft_atoi_change(argv[1]);
@@ -29,6 +29,7 @@ void	arg_checker_parser(t_data *data, char **argv)
 	if (data->n_phil <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
 		|| data->time_to_sleep <= 0)
 		error_handler(INVALID_TIME, NULL, NULL);
+	initialize_philos(data);
 }
 
 long	ft_atoi_change(const char *str)

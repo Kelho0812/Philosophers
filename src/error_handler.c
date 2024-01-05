@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 10:06:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/04 18:13:16 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/05 11:20:54 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,10 @@ int	error_handler(int error, void *param, void **param2)
 		printf("[number_of_times_each_philosopher_must_eat](optional)\n" RESET);
 	}
 	if (error == WRONG_CHARS)
-	{
 		printf("Arguments must be " RED "only " GRN "numbers\n" RESET);
-	}
 	if (error == INVALID_TIME)
-	{
 		printf("Arguments " RED "can't be " RESET "negative or 0\n");
-	}
+	if (error == PHIL_MALLOC)
+		printf("Error Phil Malloc\n");
 	exit(1);
 }

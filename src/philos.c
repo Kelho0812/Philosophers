@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   philos.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/04 10:06:06 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/05 11:29:59 by jorteixe         ###   ########.fr       */
+/*   Created: 2024/01/05 11:10:51 by jorteixe          #+#    #+#             */
+/*   Updated: 2024/01/05 11:20:23 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
-int	main(int argc, char **argv)
+void	initialize_philos(t_data *data)
 {
-	t_data	data;
+	int	i;
 
-	if (argc != 5 && argc != 6)
-		error_handler(WRONG_ARG, NULL, NULL);
-	initializer(&data, argv);
-	
-	return (0);
+	data->philos = malloc(sizeof(t_philo) * data->n_phil);
+	if (!data->philos)
+		error_handler(PHIL_MALLOC, NULL, NULL);
+	i = 0;
+	while (i < data->n_phil)
+	{
+		data->philos[i].id = i;
+		data->philos[i].last_meal_time = 0;
+		data->philos[i].meals_eaten = 0;
+		data->philos[i].status = ALIVE;
+		pthread_mutex_init(&data->philos[i].left_fork, NULL);
+		data->philos[i].right_fork = NULL;
+		i++;
+	}
 }

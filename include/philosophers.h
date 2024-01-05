@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 10:09:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/04 17:44:31 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/05 11:29:35 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,17 @@
 # include <time.h>
 # include <unistd.h>
 
+typedef struct s_philo
+{
+	pthread_t		thread;
+	int				id;
+	long long		last_meal_time;
+	int				meals_eaten;
+	int				status;
+	pthread_mutex_t	left_fork;
+	pthread_mutex_t	*right_fork;
+
+}					t_philo;
 typedef struct s_data
 {
 	int				n_phil;
@@ -28,16 +39,18 @@ typedef struct s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				n_meals;
+	t_philo			*philos;
 }					t_data;
 
-typedef struct s_phil
-{
-	int				id;
-	long long		last_meal_time;
-	pthread_mutex_t	left_fork;
-	pthread_mutex_t	*right_fork;
+/********************/
+/*		STATUS		*/
+/********************/
 
-}					t_phil;
+# define EATING 1
+# define SLEEPING 2
+# define THINKING 3
+# define ALIVE 4
+# define DEAD 5
 
 /********************/
 /*		COLORS		*/
@@ -59,13 +72,14 @@ typedef struct s_phil
 # define WRONG_ARG 1
 # define WRONG_CHARS 2
 # define INVALID_TIME 3
+# define PHIL_MALLOC 4
 
 int					error_handler(int error, void *param, void **param2);
 
 /********************/
 /*		UTILS		*/
 /********************/
-void				arg_checker_parser(t_data *data, char **argv);
+void				initializer(t_data *data, char **argv);
 void				num_checker(char **argv);
 
 /********************/
@@ -74,5 +88,11 @@ void				num_checker(char **argv);
 
 long long			get_current_time(void);
 int					ft_usleep(unsigned long long time);
+
+/********************/
+/*		PHILOS		*/
+/********************/
+
+void initialize_philos(t_data *data);
 
 #endif
