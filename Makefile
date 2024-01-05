@@ -4,6 +4,15 @@ LIBFT = ./include/libft/libft.a
 
 PRINTF = ./include/ft_printf/libftprintf.a
 
+RED = \033[0;31m
+GRN = \033[0;32m
+YEL = \033[0;33m
+BLU = \033[0;34m
+MAG = \033[0;35m
+CYN = \033[0;36m
+WHT = \033[0;37m
+RES = \033[0m
+
 CC = cc
 
 CFLAGS = -Werror -Wall -Wextra -g
@@ -20,15 +29,17 @@ SOURCES := main.c \
 			philos.c
 OBJECTS := $(patsubst %.c,$(ODIR)/%.o,$(SOURCES))
 
+
 all : ${NAME}
 
 ${NAME} : ${OBJECTS}
 	@${CC} ${CFLAGS} ${OBJECTS} -o ${NAME}
-	@echo "philo created"
+	@echo "\n$(GRN)➾ philo created$(RES)"
 
 $(ODIR)/%.o: $(SDIR)/%.c | $(ODIR)
 	@$(CC) $(CFLAGS) -c -o $@ $<
-	@echo "philo objects created"
+	@echo "${GRN}➾ $@ created ${RES}"
+
 
 $(ODIR):
 	@mkdir -p $@	
@@ -36,10 +47,10 @@ $(ODIR):
 clean :
 	@${RM} ${OBJECTS}
 	@${RM} ${ODIR}
-	@echo "philo objects deleted"
+	@echo "${RED}➾ philo objects deleted${RES}"
 
 fclean : clean
 	@${RM} ${NAME}
-	@echo "philo deleted"
+	@echo "${RED}➾ philo deleted${RES}"
 
 re : fclean all
