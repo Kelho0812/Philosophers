@@ -6,14 +6,11 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 11:13:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/05 11:29:51 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/08 11:20:31 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
-
-long	ft_atoi_change(const char *str);
-int		ft_isdigit(int n);
 
 void	initializer(t_data *data, char **argv)
 {
@@ -22,10 +19,16 @@ void	initializer(t_data *data, char **argv)
 	data->time_to_die = ft_atoi_change(argv[2]);
 	data->time_to_eat = ft_atoi_change(argv[3]);
 	data->time_to_sleep = ft_atoi_change(argv[4]);
+	data->start_time = get_current_time();
+	data->finish = false;
 	if (argv[5])
+	{
 		data->n_meals = ft_atoi_change(argv[5]);
+		if (data->n_meals < 0)
+			error_handler(INVALID_TIME, NULL, NULL);
+	}
 	else
-		data->n_meals = 0;
+		data->n_meals = -1;
 	if (data->n_phil <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
 		|| data->time_to_sleep <= 0)
 		error_handler(INVALID_TIME, NULL, NULL);
@@ -80,5 +83,27 @@ int	ft_isdigit(int n)
 	else
 	{
 		return (0);
+	}
+}
+
+void	monitor(t_data *data)
+{
+	long long	now;
+	int			i;
+	int			time_passed;
+
+	now = get_current_time();
+	i = 0;
+	while (i < data->n_phil)
+	{
+		time_passed = now - data->philos[i].last_meal_time;
+		if (time_passed > data->time_to_die)
+		{
+			printf("%d %d is dead", time_passed, data->philos[i].id);
+			data->philos[i].status = DEAD;
+			data->finish = true;
+			break ;
+		}
+		i++;
 	}
 }

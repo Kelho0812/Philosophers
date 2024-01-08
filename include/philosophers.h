@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 10:09:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/05 11:29:35 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/08 10:59:21 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define PHILOSOPHERS_H
 
 # include <pthread.h>
+# include <stdbool.h>
 # include <stdint.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -28,17 +29,23 @@ typedef struct s_philo
 	long long		last_meal_time;
 	int				meals_eaten;
 	int				status;
-	pthread_mutex_t	left_fork;
-	pthread_mutex_t	*right_fork;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	right_fork;
+	struct s_data	*data;
 
 }					t_philo;
 typedef struct s_data
 {
 	int				n_phil;
+	bool			finish;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				n_meals;
+	long long		start_time;
 	t_philo			*philos;
 }					t_data;
 
@@ -75,24 +82,30 @@ typedef struct s_data
 # define PHIL_MALLOC 4
 
 int					error_handler(int error, void *param, void **param2);
+void				ft_exit(t_data *data);
 
 /********************/
 /*		UTILS		*/
 /********************/
 void				initializer(t_data *data, char **argv);
+long				ft_atoi_change(const char *str);
+int					ft_isdigit(int n);
 void				num_checker(char **argv);
+void				monitor(t_data *data);
 
 /********************/
 /*		TIME		*/
 /********************/
 
 long long			get_current_time(void);
-int					ft_usleep(unsigned long long time);
+int					ft_usleep(long long milliseconds);
 
 /********************/
 /*		PHILOS		*/
 /********************/
 
-void initialize_philos(t_data *data);
+void				initialize_philos(t_data *data);
+void				threads_create(t_data *data);
+void				threads_join(t_data *data);
 
 #endif
