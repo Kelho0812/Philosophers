@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 10:06:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/08 11:15:11 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:05:03 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ int	error_handler(int error, void *param, void **param2)
 
 void	ft_exit(t_data *data)
 {
-	int	i;
+    int	i;
 
-	i = 0;
-	while (i < data->n_phil)
-	{
-		pthread_mutex_destroy(&data->philos[i].right_fork);
-		i++;
-	}
-	free(data->philos);
+    i = 0;
+    while (i < data->n_phil)
+    {
+        pthread_mutex_destroy(&data->philos[i].right_fork);
+        i++;
+    }
+    free((*data).philos);
 }

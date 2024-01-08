@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:10:51 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/08 12:19:18 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:03:49 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,23 +41,23 @@ void	initialize_philos(t_data *data)
 
 void	*routine(void *arg)
 {
-	t_philo		*philo;
-	
+	t_philo	*philo;
+
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 	{
-		printf("%lld %d is thinking\n", philo->data->current_time - philo->data->start_time,
-			philo->id);
+		printf("%lld %d is thinking\n", philo->data->current_time
+			- philo->data->start_time, philo->id);
 		ft_usleep(1);
 	}
 	while (philo->data->finish != true)
 	{
 		eating(philo);
-		printf("%lld %d is thinking\n", philo->data->current_time - philo->data->start_time,
-			philo->id);
+		printf("%lld %d is thinking\n", philo->data->current_time
+			- philo->data->start_time, philo->id);
 		philo->status = THINKING;
-		printf(CYN "%lld %d is sleeping\n" RESET, philo->data->current_time - philo->data->start_time,
-			philo->id);
+		printf(CYN "%lld %d is sleeping\n" RESET, philo->data->current_time
+			- philo->data->start_time, philo->id);
 		philo->status = SLEEPING;
 		ft_usleep(philo->time_to_sleep);
 	}
@@ -92,6 +92,8 @@ void	threads_join(t_data *data)
 void	eating(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
+	printf(YEL "%lld %d has taken a fork\n" RESET, philo->data->current_time
+		- philo->data->start_time, philo->id);
 	pthread_mutex_lock(&(philo->right_fork));
 	printf(YEL "%lld %d has taken a fork\n" RESET, philo->data->current_time
 		- philo->data->start_time, philo->id);
@@ -100,6 +102,9 @@ void	eating(t_philo *philo)
 	printf(GRN "%lld %d is eating\n" RESET, philo->data->current_time
 		- philo->data->start_time, philo->id);
 	philo->meals_eaten += 1;
+	if (philo->meals_eaten == philo->data->n_meals
+		&& philo->data->n_meals != (-1))
+		philo->full = true;
 	ft_usleep(philo->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(&(philo->right_fork));

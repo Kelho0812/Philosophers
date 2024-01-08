@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 10:09:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/08 12:16:23 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:56:53 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct s_philo
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
+	bool			full;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	right_fork;
 	struct s_data	*data;
@@ -47,6 +48,7 @@ typedef struct s_data
 	int				n_meals;
 	long long		start_time;
 	long long		current_time;
+	int				nr_full;
 	t_philo			*philos;
 }					t_data;
 

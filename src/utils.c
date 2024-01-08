@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 11:13:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/08 13:52:34 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/08 15:04:02 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	initializer(t_data *data, char **argv)
 	data->start_time = get_current_time();
 	data->current_time = get_current_time();
 	data->finish = false;
+	data->nr_full = 0;
 	if (argv[5])
 	{
 		data->n_meals = ft_atoi_change(argv[5]);
@@ -93,12 +94,11 @@ void	monitor(t_data *data)
 	int			i;
 	int			time_passed;
 
-
 	i = 0;
 	while (i < data->n_phil)
 	{
 		now = get_current_time();
-		data->current_time = now;	
+		data->current_time = now;
 		time_passed = now - data->philos[i].last_meal_time;
 		if (time_passed > data->time_to_die && data->philos->status != EATING)
 		{
@@ -106,6 +106,16 @@ void	monitor(t_data *data)
 			data->philos[i].status = DEAD;
 			data->finish = true;
 			break ;
-		i++;
+			i++;
+		}
+		// if (data->philos[i].full == true)
+		// {
+		// 	data->nr_full++;
+		// 	if (data->nr_full == data->n_phil)
+		// 	{
+		// 		data->finish = true;
+		// 		break ;
+		// 	}
+		// }
 	}
 }
