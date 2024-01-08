@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 11:13:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/08 15:04:02 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:10:20 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,16 +106,17 @@ void	monitor(t_data *data)
 			data->philos[i].status = DEAD;
 			data->finish = true;
 			break ;
-			i++;
 		}
-		// if (data->philos[i].full == true)
-		// {
-		// 	data->nr_full++;
-		// 	if (data->nr_full == data->n_phil)
-		// 	{
-		// 		data->finish = true;
-		// 		break ;
-		// 	}
-		// }
+		if (data->philos[i].meals_eaten == data->n_meals && data->philos[i].checked == false)
+		{
+			// printf("Full Phil ID: %d\n", data->philos[i].id);
+			data->nr_full++;
+			data->philos[i].checked = true;
+		}
+		i++;
+	}
+	if (data->nr_full == data->n_phil)
+	{
+		data->finish = true;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:10:51 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/08 15:03:49 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:08:17 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	initialize_philos(t_data *data)
 		data->philos[i].time_to_die = data->time_to_die;
 		data->philos[i].time_to_eat = data->time_to_eat;
 		data->philos[i].time_to_sleep = data->time_to_sleep;
+		data->philos[i].checked = false;
 		pthread_mutex_init(&data->philos[i].right_fork, NULL);
 		if (i == (data->n_phil - 1))
 			data->philos[i].left_fork = &data->philos[0].right_fork;
@@ -101,11 +102,8 @@ void	eating(t_philo *philo)
 	philo->last_meal_time = philo->data->current_time;
 	printf(GRN "%lld %d is eating\n" RESET, philo->data->current_time
 		- philo->data->start_time, philo->id);
-	philo->meals_eaten += 1;
-	if (philo->meals_eaten == philo->data->n_meals
-		&& philo->data->n_meals != (-1))
-		philo->full = true;
 	ft_usleep(philo->time_to_eat);
+	philo->meals_eaten += 1;
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(&(philo->right_fork));
 }
