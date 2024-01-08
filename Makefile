@@ -15,7 +15,7 @@ RES = \033[0m
 
 CC = cc
 
-CFLAGS = -Werror -Wall -Wextra -g -pthread 
+CFLAGS = -Werror -Wall -Wextra -g -pthread -fsanitize=thread
 
 RM = rm -rf
 
