@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 10:06:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/05 11:20:54 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/08 10:20:40 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,19 @@ int	error_handler(int error, void *param, void **param2)
 		printf("Arguments " RED "can't be " RESET "negative or 0\n");
 	if (error == PHIL_MALLOC)
 		printf("Error Phil Malloc\n");
+	exit(1);
+}
+
+void	ft_exit(t_data *data)
+{
+	int i;
+
+	i = 0;
+	while (i < data->n_phil)
+	{
+		pthread_mutex_destroy(&data->philos[i].right_fork);
+		i++;
+	}
+	free(data->philos);
 	exit(1);
 }
