@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 10:09:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/08 10:59:21 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:16:23 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_data
 	int				time_to_sleep;
 	int				n_meals;
 	long long		start_time;
+	long long		current_time;
 	t_philo			*philos;
 }					t_data;
 
@@ -107,5 +108,6 @@ int					ft_usleep(long long milliseconds);
 void				initialize_philos(t_data *data);
 void				threads_create(t_data *data);
 void				threads_join(t_data *data);
+void				eating(t_philo *philo);
 
 #endif

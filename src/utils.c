@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 11:13:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/08 11:20:31 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/08 13:52:34 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	initializer(t_data *data, char **argv)
 	data->time_to_eat = ft_atoi_change(argv[3]);
 	data->time_to_sleep = ft_atoi_change(argv[4]);
 	data->start_time = get_current_time();
+	data->current_time = get_current_time();
 	data->finish = false;
 	if (argv[5])
 	{
@@ -92,18 +93,19 @@ void	monitor(t_data *data)
 	int			i;
 	int			time_passed;
 
-	now = get_current_time();
+
 	i = 0;
 	while (i < data->n_phil)
 	{
+		now = get_current_time();
+		data->current_time = now;	
 		time_passed = now - data->philos[i].last_meal_time;
-		if (time_passed > data->time_to_die)
+		if (time_passed > data->time_to_die && data->philos->status != EATING)
 		{
-			printf("%d %d is dead", time_passed, data->philos[i].id);
+			printf(RED "%d %d died\n" RESET, time_passed, data->philos[i].id);
 			data->philos[i].status = DEAD;
 			data->finish = true;
 			break ;
-		}
 		i++;
 	}
 }
