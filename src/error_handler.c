@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
+/*   By: jorteixe  <jorteixe@student.42porto.>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/04 10:06:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/09 16:40:06 by jorteixe         ###   ########.fr       */
+/*   Created: 2024/01/08 18:26:28 by jorteixe          #+#    #+#             */
+/*   Updated: 2024/01/09 21:37:09 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
