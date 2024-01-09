@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/05 11:10:51 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/09 16:46:11 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/09 17:03:48 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,15 @@ void	*routine(void *data)
 
 void	dinner(t_data *data)
 {
-	int	i;
-
-	i = 0;
 	if (data->meals_to_eat == 0)
 		return;
 	else if (data->nbr_philos == 1)
 		;
 	else
-	{
-		while (i < data->nbr_philos)
-		{
-			pthread_create(&(data->philos[i].thread), NULL, &routine,
-				&(data->philos[i]));
-			i++;
-		}
-	}
+		threads_create(data);
 	data->start_time = get_current_time();
 	set_bool(&data->data_mutex, &data->threads_are_ready, true);
 	threads_join(data);
-	
 }
 
 void	threads_join(t_data *data)
@@ -58,6 +47,20 @@ void	threads_join(t_data *data)
 	while (i < data->nbr_philos)
 	{
 		pthread_join(data->philos[i].thread, NULL);
+		i++;
+	}
+}
+
+void	threads_create(t_data *data)
+{
+	int i;
+
+	i = 0;
+
+	while (i < data->nbr_philos)
+	{
+		pthread_create(&(data->philos[i].thread), NULL, &routine,
+			&(data->philos[i]));
 		i++;
 	}
 }
