@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
+/*   By: jorteixe  <jorteixe@student.42porto.>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/04 10:09:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/09 16:40:19 by jorteixe         ###   ########.fr       */
+/*   Created: 2024/01/09 09:30:53 by jorteixe          #+#    #+#             */
+/*   Updated: 2024/01/09 21:37:09 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,23 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <unistd.h>
+
+/********************/
+/*		COLORS		*/
+/********************/
+
+# define RED "\x1B[31m"
+# define GRN "\x1B[32m"
+# define YEL "\x1B[33m"
+# define BLU "\x1B[34m"
+# define MAG "\x1B[35m"
+# define CYN "\x1B[36m"
+# define WHT "\x1B[37m"
+# define RESET "\x1B[0m"
+
+/********************/
+/*		STRUCTS		*/
+/********************/
 
 typedef pthread_mutex_t	t_mtx;
 typedef struct s_data	t_data;
@@ -36,6 +53,7 @@ typedef struct s_philo
 	long long			last_meal_time;
 	int					meals_eaten;
 	bool				full;
+	t_mtx				philo_mutex;
 	t_fork				*left_fork;
 	t_fork				*right_fork;
 	t_data				*data;
@@ -51,6 +69,7 @@ typedef struct s_data
 	bool				finish;
 	bool				threads_are_ready;
 	t_mtx				data_mutex;
+	t_mtx				write_mutex;
 	t_fork				*forks;
 	t_philo				*philos;
 }						t_data;
@@ -64,22 +83,9 @@ typedef enum e_status
 	EATING,
 	SLEEPING,
 	THINKING,
-	ALIVE,
+	TAKE_FORK,
 	DEAD,
 }						t_status;
-
-/********************/
-/*		COLORS		*/
-/********************/
-
-# define RED "\x1B[31m"
-# define GRN "\x1B[32m"
-# define YEL "\x1B[33m"
-# define BLU "\x1B[34m"
-# define MAG "\x1B[35m"
-# define CYN "\x1B[36m"
-# define WHT "\x1B[37m"
-# define RESET "\x1B[0m"
 
 /********************/
 /*		ERRORS		*/
@@ -106,6 +112,7 @@ long					ft_atoi_change(const char *str);
 int						ft_isdigit(int n);
 int						num_checker(char **argv);
 void					monitor(t_data *data);
+void					write_action(t_status status, t_philo *philo);
 
 /********************/
 /*		TIME		*/
@@ -120,6 +127,7 @@ int						ft_usleep(long long milliseconds);
 
 int						philos_init(t_data *data);
 void					dinner(t_data *data);
+void					threads_create(t_data *data);
 void					threads_join(t_data *data);
 void					eating(t_philo *philo);
 
