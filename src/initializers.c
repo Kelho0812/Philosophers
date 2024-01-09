@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   initializers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
+/*   By: jorteixe  <jorteixe@student.42porto.>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 14:51:26 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/09 16:30:05 by jorteixe         ###   ########.fr       */
+/*   Created: 2024/01/09 14:51:01 by jorteixe          #+#    #+#             */
+/*   Updated: 2024/01/09 21:37:09 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
 static void	distribute_forks(t_philo *philo, t_fork *forks, int i);
+static void	init_forks_mutexes(t_data *data);
 
 int	initializer(t_data *data, char **argv, int argc)
 {
@@ -44,6 +45,7 @@ int	data_init(t_data *data, char **argv, int argc)
 		return (error_handler(MALLOC_FORKS));
 	}
 	pthread_mutex_init(&data->data_mutex, NULL);
+	pthread_mutex_init(&data->write_mutex, NULL);
 	if (argc == 6)
 		data->meals_to_eat = ft_atoi_change(argv[5]);
 	else
@@ -52,7 +54,7 @@ int	data_init(t_data *data, char **argv, int argc)
 	return (1);
 }
 
-void	init_forks_mutexes(t_data *data)
+static void	init_forks_mutexes(t_data *data)
 {
 	int	i;
 
@@ -79,9 +81,11 @@ int	philos_init(t_data *data)
 		philo->last_meal_time = 0;
 		philo->meals_eaten = 0;
 		philo->data = data;
+		pthread_mutex_init(&philo->philo_mutex, NULL);
 		distribute_forks(philo, data->forks, i);
 		i++;
 	}
+	return(1);
 }
 
 static void	distribute_forks(t_philo *philo, t_fork *forks, int philo_table_pos)
