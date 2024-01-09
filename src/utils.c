@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 11:13:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/09 16:28:40 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/09 16:54:11 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,24 @@ int	ft_isdigit(int n)
 		return (1);
 	else
 		return (0);
+}
+long long	get_current_time(void)
+{
+	struct timeval	tv;
+	long long		milliseconds;
+
+	gettimeofday(&tv, NULL);
+	milliseconds = (long long)(tv.tv_sec)*1000 + (long long)(tv.tv_usec)
+		/ 1000;
+	return (milliseconds);
+}
+
+int	ft_usleep(long long milliseconds)
+{
+	long long	start;
+
+	start = get_current_time();
+	while ((get_current_time() - start) < milliseconds)
+		usleep(500);
+	return (0);
 }

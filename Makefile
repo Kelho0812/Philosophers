@@ -24,7 +24,6 @@ ODIR := obj
 
 SOURCES := main.c \
 			initializers.c\
-			time.c \
 			error_handler.c \
 			utils.c \
 			dinner.c \
