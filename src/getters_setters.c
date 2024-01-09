@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   getters_setters.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
+/*   By: jorteixe  <jorteixe@student.42porto.>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/09 12:00:10 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/09 16:40:19 by jorteixe         ###   ########.fr       */
+/*   Created: 2024/01/09 11:42:30 by jorteixe          #+#    #+#             */
+/*   Updated: 2024/01/09 21:37:09 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,5 @@ long long	get_long_long(t_mtx *mutex, long long *llpointer)
 bool	dinner_finished(t_data *data)
 {
 	return (get_bool(&data->data_mutex, &data->finish));
+	
 }
