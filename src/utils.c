@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
+/*   By: jorteixe  <jorteixe@student.42porto.>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/04 11:13:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/09 16:54:11 by jorteixe         ###   ########.fr       */
+/*   Created: 2024/01/09 09:30:48 by jorteixe          #+#    #+#             */
+/*   Updated: 2024/01/09 21:37:09 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,14 @@ int	ft_isdigit(int n)
 	else
 		return (0);
 }
+
 long long	get_current_time(void)
 {
 	struct timeval	tv;
 	long long		milliseconds;
 
 	gettimeofday(&tv, NULL);
-	milliseconds = (long long)(tv.tv_sec)*1000 + (long long)(tv.tv_usec)
+	milliseconds = (long long)(tv.tv_sec) * 1000 + (long long)(tv.tv_usec)
 		/ 1000;
 	return (milliseconds);
 }
