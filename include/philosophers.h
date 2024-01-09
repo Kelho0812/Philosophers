@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 10:09:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/08 15:23:53 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/09 16:40:19 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,49 +19,54 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/time.h>
-# include <time.h>
 # include <unistd.h>
+
+typedef pthread_mutex_t	t_mtx;
+typedef struct s_data	t_data;
+typedef struct s_fork
+{
+	t_mtx				fork;
+	int					fork_id;
+}						t_fork;
 
 typedef struct s_philo
 {
-	pthread_t		thread;
-	int				id;
-	long long		last_meal_time;
-	int				meals_eaten;
-	int				status;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	bool			full;
-	bool			checked;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	right_fork;
-	struct s_data	*data;
-
-}					t_philo;
+	pthread_t			thread;
+	int					id;
+	long long			last_meal_time;
+	int					meals_eaten;
+	bool				full;
+	t_fork				*left_fork;
+	t_fork				*right_fork;
+	t_data				*data;
+}						t_philo;
 typedef struct s_data
 {
-	int				n_phil;
-	bool			finish;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				n_meals;
-	long long		start_time;
-	long long		current_time;
-	int				nr_full;
-	t_philo			*philos;
-}					t_data;
+	int					nbr_philos;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
+	int					meals_to_eat;
+	long long			start_time;
+	bool				finish;
+	bool				threads_are_ready;
+	t_mtx				data_mutex;
+	t_fork				*forks;
+	t_philo				*philos;
+}						t_data;
 
 /********************/
 /*		STATUS		*/
 /********************/
 
-# define EATING 1
-# define SLEEPING 2
-# define THINKING 3
-# define ALIVE 4
-# define DEAD 5
+typedef enum e_status
+{
+	EATING,
+	SLEEPING,
+	THINKING,
+	ALIVE,
+	DEAD,
+}						t_status;
 
 /********************/
 /*		COLORS		*/
@@ -80,37 +85,53 @@ typedef struct s_data
 /*		ERRORS		*/
 /********************/
 
-# define WRONG_ARG 1
-# define WRONG_CHARS 2
-# define INVALID_TIME 3
-# define PHIL_MALLOC 4
+typedef enum e_errorcode
+{
+	WRONG_ARG_NR,
+	WRONG_CHARS,
+	INVALID_TIME,
+	MALLOC_PHILO,
+	MALLOC_FORKS
+}						t_errorcode;
 
-int					error_handler(int error, void *param, void **param2);
-void				ft_exit(t_data *data);
+int						error_handler(t_errorcode error);
+void					ft_exit(t_data *data);
 
 /********************/
 /*		UTILS		*/
 /********************/
-void				initializer(t_data *data, char **argv);
-long				ft_atoi_change(const char *str);
-int					ft_isdigit(int n);
-void				num_checker(char **argv);
-void				monitor(t_data *data);
+int						initializer(t_data *data, char **argv, int argc);
+int						data_init(t_data *data, char **argv, int argc);
+long					ft_atoi_change(const char *str);
+int						ft_isdigit(int n);
+int						num_checker(char **argv);
+void					monitor(t_data *data);
 
 /********************/
 /*		TIME		*/
 /********************/
 
-long long			get_current_time(void);
-int					ft_usleep(long long milliseconds);
+long long				get_current_time(void);
+int						ft_usleep(long long milliseconds);
 
 /********************/
 /*		PHILOS		*/
 /********************/
 
-void				initialize_philos(t_data *data);
-void				threads_create(t_data *data);
-void				threads_join(t_data *data);
-void				eating(t_philo *philo);
+int						philos_init(t_data *data);
+void					dinner(t_data *data);
+void					threads_join(t_data *data);
+void					eating(t_philo *philo);
+
+/********************/
+/*	GETTERS/SETTERS	*/
+/********************/
+
+void					set_bool(t_mtx *mutex, bool *bool_pointer, bool value);
+bool					get_bool(t_mtx *mutex, bool *bool_pointer);
+void					set_long_long(t_mtx *mutex, long long *llpointer,
+							long long value);
+long long				get_long_long(t_mtx *mutex, long long *llpointer);
+bool					dinner_finished(t_data *data);
 
 #endif
