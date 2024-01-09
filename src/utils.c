@@ -6,36 +6,11 @@
 /*   By: jorteixe <jorteixe@student.42porto.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/04 11:13:03 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/08 16:18:22 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/09 16:28:40 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
-
-void	initializer(t_data *data, char **argv)
-{
-	num_checker(argv);
-	data->n_phil = ft_atoi_change(argv[1]);
-	data->time_to_die = ft_atoi_change(argv[2]);
-	data->time_to_eat = ft_atoi_change(argv[3]);
-	data->time_to_sleep = ft_atoi_change(argv[4]);
-	data->start_time = get_current_time();
-	data->current_time = get_current_time();
-	data->finish = false;
-	data->nr_full = 0;
-	if (argv[5])
-	{
-		data->n_meals = ft_atoi_change(argv[5]);
-		if (data->n_meals < 0)
-			error_handler(INVALID_TIME, NULL, NULL);
-	}
-	else
-		data->n_meals = -1;
-	if (data->n_phil <= 0 || data->time_to_die <= 0 || data->time_to_eat <= 0
-		|| data->time_to_sleep <= 0)
-		error_handler(INVALID_TIME, NULL, NULL);
-	initialize_philos(data);
-}
 
 long	ft_atoi_change(const char *str)
 {
@@ -55,7 +30,7 @@ long	ft_atoi_change(const char *str)
 	return (n);
 }
 
-void	num_checker(char **argv)
+int	num_checker(char **argv)
 {
 	int	i;
 	int	n;
@@ -67,53 +42,18 @@ void	num_checker(char **argv)
 		while (argv[i][n] != '\0')
 		{
 			if (ft_isdigit(argv[i][n]) == 0)
-			{
-				error_handler(WRONG_CHARS, NULL, NULL);
-			}
+				return (error_handler(WRONG_CHARS));
 			n++;
 		}
 		i++;
 	}
+	return (1);
 }
 
 int	ft_isdigit(int n)
 {
 	if (n >= 48 && n <= 57)
-	{
 		return (1);
-	}
 	else
-	{
 		return (0);
-	}
-}
-
-void	monitor(t_data *data)
-{
-	long long	now;
-	int			i;
-	int			time_passed;
-
-	i = 0;
-	while (i < data->n_phil)
-	{
-		now = get_current_time();
-		data->current_time = now;
-		time_passed = now - data->philos[i].last_meal_time;
-		if (time_passed > data->time_to_die && data->philos->status != EATING)
-		{
-			printf(RED "%d %d died\n" RESET, time_passed, data->philos[i].id);
-			data->philos[i].status = DEAD;
-			data->finish = true;
-			break ;
-		}
-		if (data->philos[i].meals_eaten == data->n_meals && data->philos[i].checked == false)
-		{
-			data->nr_full++;
-			data->philos[i].checked = true;
-		}
-		i++;
-	}
-	if (data->nr_full == data->n_phil)
-		data->finish = true;
 }
