@@ -49,5 +49,4 @@ long long	get_long_long(t_mtx *mutex, long long *llpointer)
 bool	dinner_finished(t_data *data)
 {
 	return (get_bool(&data->data_mutex, &data->finish));
-	
 }
