@@ -85,7 +85,7 @@ int	philos_init(t_data *data)
 		distribute_forks(philo, data->forks, i);
 		i++;
 	}
-	return(1);
+	return (1);
 }
 
 static void	distribute_forks(t_philo *philo, t_fork *forks, int philo_table_pos)
@@ -93,14 +93,11 @@ static void	distribute_forks(t_philo *philo, t_fork *forks, int philo_table_pos)
 	int	philo_nbr;
 
 	philo_nbr = philo->data->nbr_philos;
-	if (!philo->id % 2)
+	philo->first_fork = &forks[(philo_table_pos + 1) % philo_nbr];
+	philo->second_fork = &forks[philo_table_pos];
+	if (philo->id % 2  == 0)
 	{
-		philo->left_fork = &forks[(philo_table_pos + 1) % philo_nbr];
-		philo->right_fork = &forks[philo_table_pos];
-	}
-	else
-	{
-		philo->right_fork = &forks[philo_table_pos];
-		philo->left_fork = &forks[(philo_table_pos + 1) % philo_nbr];
+		philo->first_fork = &forks[philo_table_pos];
+		philo->second_fork = &forks[(philo_table_pos + 1) % philo_nbr];
 	}
 }
