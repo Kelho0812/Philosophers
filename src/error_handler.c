@@ -39,7 +39,7 @@ int	error_handler(t_errorcode error)
 // 	i = 0;
 // 	while (i < data->nbr_philos)
 // 	{
-// 		pthread_mutex_destroy(&philos[i].right_fork);
+// 		pthread_mutex_destroy(&philos[i].first_fork);
 // 		i++;
 // 	}
 // 	free((*data).philos);
