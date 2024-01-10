@@ -36,7 +36,7 @@ void	dinner(t_data *data)
 		;
 	else
 		threads_create(data);
-	data->start_time = get_current_time();
+	set_long_long(&data->data_mutex, &data->start_time, get_current_time());
 	set_bool(&data->data_mutex, &data->threads_are_ready, true);
 	threads_join(data);
 }
@@ -68,10 +68,10 @@ void	threads_create(t_data *data)
 
 void	eating(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->left_fork->fork);
-	write_action(TAKE_FORK, philo);
-	pthread_mutex_lock(&philo->right_fork->fork);
-	write_action(TAKE_FORK, philo);
+	pthread_mutex_lock(&philo->second_fork->fork);
+	write_action(TAKE_FIRST_FORK, philo);
+	pthread_mutex_lock(&philo->first_fork->fork);
+	write_action(TAKE_SECOND_FORK, philo);
 	set_long_long(&philo->philo_mutex, &philo->last_meal_time,
 		get_current_time());
 	philo->meals_eaten++;
@@ -82,8 +82,8 @@ void	eating(t_philo *philo)
 	{
 		set_bool(&philo->philo_mutex, &philo->full, true);
 	}
-	pthread_mutex_unlock(&philo->left_fork->fork);
-	pthread_mutex_unlock(&philo->right_fork->fork);
+	pthread_mutex_unlock(&philo->second_fork->fork);
+	pthread_mutex_unlock(&philo->first_fork->fork);
 }
 
 // void	monitor(t_data *data)
@@ -121,7 +121,7 @@ void	write_action(t_status status, t_philo *philo)
 {
 	long long	time_passed;
 
-	time_passed = get_current_time() - philo->data->start_time;
+	time_passed = get_current_time() - get_long_long(&philo->data->data_mutex, &philo->data->start_time);
 	if (philo->full)
 		return ;
 	else
@@ -129,7 +129,7 @@ void	write_action(t_status status, t_philo *philo)
 		pthread_mutex_lock(&philo->data->write_mutex);
 		if (!dinner_finished(philo->data))
 		{
-			if (status == TAKE_FORK)
+			if (status == TAKE_FIRST_FORK || status == TAKE_SECOND_FORK)
 				printf(WHT "%lld" YEL " %d has taken a fork\n" RESET,
 					time_passed, philo->id);
 			else if (status == SLEEPING)
