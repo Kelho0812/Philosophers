@@ -54,8 +54,8 @@ typedef struct s_philo
 	int					meals_eaten;
 	bool				full;
 	t_mtx				philo_mutex;
-	t_fork				*left_fork;
-	t_fork				*right_fork;
+	t_fork				*second_fork;
+	t_fork				*first_fork;
 	t_data				*data;
 }						t_philo;
 typedef struct s_data
@@ -80,10 +80,11 @@ typedef struct s_data
 
 typedef enum e_status
 {
+	TAKE_FIRST_FORK,
+	TAKE_SECOND_FORK,
 	EATING,
 	SLEEPING,
 	THINKING,
-	TAKE_FORK,
 	DEAD,
 }						t_status;
 
