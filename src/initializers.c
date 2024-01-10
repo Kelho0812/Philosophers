@@ -34,16 +34,15 @@ int	data_init(t_data *data, char **argv, int argc)
 	data->time_to_sleep = ft_atoi_change(argv[4]);
 	data->start_time = get_current_time();
 	data->finish = false;
+	data->full_count = 0;
 	data->threads_are_ready = false;
+	data->nbr_threads_running = 0;
 	data->philos = malloc(sizeof(t_philo) * data->nbr_philos);
 	if (data->philos == NULL)
 		return (error_handler(MALLOC_PHILO));
 	data->forks = malloc(sizeof(t_fork) * data->nbr_philos);
 	if (data->forks == NULL)
-	{
-		free(data->philos);
 		return (error_handler(MALLOC_FORKS));
-	}
 	pthread_mutex_init(&data->data_mutex, NULL);
 	pthread_mutex_init(&data->write_mutex, NULL);
 	if (argc == 6)
@@ -93,11 +92,14 @@ static void	distribute_forks(t_philo *philo, t_fork *forks, int philo_table_pos)
 	int	philo_nbr;
 
 	philo_nbr = philo->data->nbr_philos;
-	philo->first_fork = &forks[(philo_table_pos + 1) % philo_nbr];
-	philo->second_fork = &forks[philo_table_pos];
-	if (philo->id % 2  == 0)
+	if (philo->id % 2 == 0)
 	{
 		philo->first_fork = &forks[philo_table_pos];
 		philo->second_fork = &forks[(philo_table_pos + 1) % philo_nbr];
+	}
+	else
+	{
+		philo->first_fork = &forks[(philo_table_pos + 1) % philo_nbr];
+		philo->second_fork = &forks[philo_table_pos];
 	}
 }

@@ -32,15 +32,24 @@ int	error_handler(t_errorcode error)
 	return (0);
 }
 
-// void	ft_exit(t_data *data)
-// {
-// 	int	i;
+void	wait_philos(t_data *data)
+{
+	while (!get_bool(&data->data_mutex, &data->threads_are_ready))
+		;
+}
 
-// 	i = 0;
-// 	while (i < data->nbr_philos)
-// 	{
-// 		pthread_mutex_destroy(&philos[i].first_fork);
-// 		i++;
-// 	}
-// 	free((*data).philos);
-// }
+void	ft_exit(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->nbr_philos)
+	{
+		pthread_mutex_destroy(&data->philos[i].philo_mutex);
+		i++;
+	}
+	pthread_mutex_destroy(&data->data_mutex);
+	pthread_mutex_destroy(&data->write_mutex);
+	free(data->philos);
+	free(data->forks);
+}

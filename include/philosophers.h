@@ -61,6 +61,8 @@ typedef struct s_philo
 typedef struct s_data
 {
 	int					nbr_philos;
+	int					nbr_threads_running;
+	int					full_count;
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
@@ -68,6 +70,7 @@ typedef struct s_data
 	long long			start_time;
 	bool				finish;
 	bool				threads_are_ready;
+	pthread_t			monitor;
 	t_mtx				data_mutex;
 	t_mtx				write_mutex;
 	t_fork				*forks;
@@ -112,7 +115,7 @@ int						data_init(t_data *data, char **argv, int argc);
 long					ft_atoi_change(const char *str);
 int						ft_isdigit(int n);
 int						num_checker(char **argv);
-void					monitor(t_data *data);
+void					*monitor(void *data);
 void					write_action(t_status status, t_philo *philo);
 
 /********************/
@@ -121,6 +124,7 @@ void					write_action(t_status status, t_philo *philo);
 
 long long				get_current_time(void);
 int						ft_usleep(long long milliseconds);
+void					wait_philos(t_data *data);
 
 /********************/
 /*		PHILOS		*/
@@ -131,6 +135,14 @@ void					dinner(t_data *data);
 void					threads_create(t_data *data);
 void					threads_join(t_data *data);
 void					eating(t_philo *philo);
+
+/********************/
+/*		MONITOR		*/
+/********************/
+
+bool					all_threads_running(t_mtx *mutex, int *thread_nbr,
+							int philo_nbr);
+void					increase_threads_running_nbr(t_mtx *mutex, int *value);
 
 /********************/
 /*	GETTERS/SETTERS	*/

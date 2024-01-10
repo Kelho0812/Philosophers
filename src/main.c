@@ -21,7 +21,7 @@ int	main(int argc, char **argv)
 		if (!initializer(&data, argv, argc))
 			return(1);
 		dinner(&data);
-		// ft_exit(&data);
+		ft_exit(&data);
 	}
 	else
 		return(error_handler(WRONG_ARG_NR));

@@ -18,12 +18,18 @@ void	*routine(void *data)
 
 	philo = (t_philo *)data;
 	// wait_philos(philo->data);
+	set_long_long(&philo->philo_mutex, &philo->last_meal_time,
+		get_current_time());
+	increase_threads_running_nbr(&philo->data->data_mutex,
+		&philo->data->nbr_threads_running);
 	while (!dinner_finished(philo->data))
 	{
+		write_action(THINKING, philo);
+		// if (philo->full)
+		// 	break ;
 		eating(philo);
 		write_action(SLEEPING, philo);
 		ft_usleep(philo->data->time_to_sleep);
-		write_action(THINKING, philo);
 	}
 	return (NULL);
 }
@@ -37,6 +43,7 @@ void	dinner(t_data *data)
 	else
 		threads_create(data);
 	set_long_long(&data->data_mutex, &data->start_time, get_current_time());
+	pthread_create(&data->monitor, NULL, &monitor, data);
 	set_bool(&data->data_mutex, &data->threads_are_ready, true);
 	threads_join(data);
 }
@@ -51,6 +58,7 @@ void	threads_join(t_data *data)
 		pthread_join(data->philos[i].thread, NULL);
 		i++;
 	}
+	pthread_join(data->monitor, NULL);
 }
 
 void	threads_create(t_data *data)
@@ -68,15 +76,17 @@ void	threads_create(t_data *data)
 
 void	eating(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->second_fork->fork);
-	write_action(TAKE_FIRST_FORK, philo);
+	if (get_bool(&philo->philo_mutex, &philo->full))
+		return ;
 	pthread_mutex_lock(&philo->first_fork->fork);
+	write_action(TAKE_FIRST_FORK, philo);
+	pthread_mutex_lock(&philo->second_fork->fork);
 	write_action(TAKE_SECOND_FORK, philo);
 	set_long_long(&philo->philo_mutex, &philo->last_meal_time,
 		get_current_time());
-	philo->meals_eaten++;
 	write_action(EATING, philo);
 	ft_usleep(philo->data->time_to_eat);
+	philo->meals_eaten++;
 	if (philo->data->meals_to_eat > 0
 		&& philo->meals_eaten == philo->data->meals_to_eat)
 	{
@@ -86,46 +96,15 @@ void	eating(t_philo *philo)
 	pthread_mutex_unlock(&philo->first_fork->fork);
 }
 
-// void	monitor(t_data *data)
-// {
-// 	long long	now;
-// 	int			i;
-// 	int			time_passed;
-
-// 	i = 0;
-// 	while (i < data->n_phil)
-// 	{
-// 		now = get_current_time();
-// 		data->current_time = now;
-// 		time_passed = now - data->philos[i].last_meal_time;
-// 		if (time_passed > data->time_to_die && data->philos->status != EATING)
-// 		{
-// 			printf(RED "%d %d died\n" RESET, time_passed, data->philos[i].id);
-// 			data->philos[i].status = DEAD;
-// 			data->finish = true;
-// 			break ;
-// 		}
-// 		if (data->philos[i].meals_eaten == data->n_meals
-// 			&& data->philos[i].checked == false)
-// 		{
-// 			data->nr_full++;
-// 			data->philos[i].checked = true;
-// 		}
-// 		i++;
-// 	}
-// 	if (data->nr_full == data->n_phil)
-// 		data->finish = true;
-// }
-
 void	write_action(t_status status, t_philo *philo)
 {
 	long long	time_passed;
 
-	time_passed = get_current_time() - get_long_long(&philo->data->data_mutex, &philo->data->start_time);
-	if (philo->full)
-		return ;
-	else
-	{
+	time_passed = get_current_time() - get_long_long(&philo->data->data_mutex,
+			&philo->data->start_time);
+	// if (philo->full)
+	// 	return ;
+
 		pthread_mutex_lock(&philo->data->write_mutex);
 		if (!dinner_finished(philo->data))
 		{
@@ -146,4 +125,3 @@ void	write_action(t_status status, t_philo *philo)
 		}
 		pthread_mutex_unlock(&philo->data->write_mutex);
 	}
-}
