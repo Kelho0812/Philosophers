@@ -27,7 +27,8 @@ SOURCES := main.c \
 			error_handler.c \
 			utils.c \
 			dinner.c \
-			getters_setters.c
+			getters_setters.c\
+			monitor.c
 OBJECTS := $(patsubst %.c,$(ODIR)/%.o,$(SOURCES))
 
 
