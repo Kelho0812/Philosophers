@@ -9,12 +9,12 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/philo",
-			"args": ["4", "410", "200", "200", "5"],
+			"args": ["4", "410", "200", "200"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],
 			"externalConsole": false,
-			"MIMode": "gdb",
+			"MIMode": "gdb", 
 			"setupCommands": [
 				{
 					"description": "Enable pretty-printing for gdb",
