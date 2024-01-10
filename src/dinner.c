@@ -17,16 +17,17 @@ void	*routine(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	// wait_philos(philo->data);
+	wait_philos(philo->data);
 	set_long_long(&philo->philo_mutex, &philo->last_meal_time,
 		get_current_time());
 	increase_threads_running_nbr(&philo->data->data_mutex,
 		&philo->data->nbr_threads_running);
 	while (!dinner_finished(philo->data))
 	{
-		write_action(THINKING, philo);
 		// if (philo->full)
 		// 	break ;
+		write_action(THINKING, philo);
+		ft_usleep(1);
 		eating(philo);
 		write_action(SLEEPING, philo);
 		ft_usleep(philo->data->time_to_sleep);
@@ -76,8 +77,8 @@ void	threads_create(t_data *data)
 
 void	eating(t_philo *philo)
 {
-	if (get_bool(&philo->philo_mutex, &philo->full))
-		return ;
+	// if (get_bool(&philo->philo_mutex, &philo->full))
+	// 	return ;
 	pthread_mutex_lock(&philo->first_fork->fork);
 	write_action(TAKE_FIRST_FORK, philo);
 	pthread_mutex_lock(&philo->second_fork->fork);

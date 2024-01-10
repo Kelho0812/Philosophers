@@ -15,7 +15,9 @@ RES = \033[0m
 
 CC = cc
 
-CFLAGS = -Werror -Wall -Wextra -g -pthread -fsanitize=thread
+CFLAGS = -Werror -Wall -Wextra -g -pthread
+
+LDFLAGS = -fsanitize=thread
 
 RM = rm -rf
 
@@ -35,11 +37,11 @@ OBJECTS := $(patsubst %.c,$(ODIR)/%.o,$(SOURCES))
 all : ${NAME}
 
 ${NAME} : ${OBJECTS}
-	@${CC} ${CFLAGS} ${OBJECTS} -o ${NAME}
+	@${CC} ${CFLAGS} $(LDFLAGS) ${OBJECTS} -o ${NAME}
 	@echo "\n$(GRN)➾ philo created$(RES)"
 
 $(ODIR)/%.o: $(SDIR)/%.c | $(ODIR)
-	@$(CC) $(CFLAGS) -c -o $@ $<
+	@$(CC) $(CFLAGS) $(LDFLAGS) -c -o $@ $<
 	@echo "${GRN}➾ $@ created ${RES}"
 
 
