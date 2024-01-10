@@ -64,7 +64,7 @@ long long	get_current_time(void)
 	long long		milliseconds;
 
 	gettimeofday(&tv, NULL);
-	milliseconds = (long long)(tv.tv_sec) * 1000 + (long long)(tv.tv_usec)
+	milliseconds = (long long)(tv.tv_sec) *1000 + (long long)(tv.tv_usec)
 		/ 1000;
 	return (milliseconds);
 }
