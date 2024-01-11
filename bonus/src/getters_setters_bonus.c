@@ -45,8 +45,3 @@ long long	get_long_long(sem_t *sem, long long *llpointer)
 	sem_post(sem);
 	return (local_ll);
 }
-
-bool	dinner_finished(t_data *data)
-{
-	return (get_bool(&data->sem_data, &data->finish));
-}
