@@ -45,17 +45,21 @@
 typedef struct s_data	t_data;
 
 # define SEM_FORKS "/forks"
+# define SEM_DEAD "/dead"
+# define SEM_PHILO "/philo"
 
 typedef struct s_philo
 {
 	pid_t				pid;
+	pthread_t			philo_thread;
 	int					id;
 	long long			last_meal_time;
+	long long			start_time;
 	int					meals_eaten;
 	bool				full;
 	t_data				*data;
-	sem_t				*sem_forks;
-	sem_t				*sem_data;
+	sem_t				*forks_sem;
+	sem_t				*dead_sem;
 }						t_philo;
 typedef struct s_data
 {
