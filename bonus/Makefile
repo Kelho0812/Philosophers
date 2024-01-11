@@ -20,7 +20,13 @@ RM = rm -rf
 SDIR := src
 ODIR := obj
 
-SOURCES := main_bonus.c 
+SOURCES := main_bonus.c \
+			# initializers_bonus.c\
+			# error_handler_bonus.c \
+			# utils_bonus.c \
+			# dinner_bonus.c \
+			# getters_setters_bonus.c\
+			# monitor_bonus.c
 
 OBJECTS := $(patsubst %.c,$(ODIR)/%.o,$(SOURCES))
 
