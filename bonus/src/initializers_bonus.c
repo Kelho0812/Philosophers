@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philosophers.h"
+#include "../include/philosophers_bonus.h"
 
 int	initializer(t_data *data, int argc, char **argv)
 {
