@@ -1,9 +1,5 @@
 NAME = philo
 
-LIBFT = ./include/libft/libft.a
-
-PRINTF = ./include/ft_printf/libftprintf.a
-
 RED = \033[0;31m
 GRN = \033[0;32m
 YEL = \033[0;33m
@@ -36,6 +32,9 @@ OBJECTS := $(patsubst %.c,$(ODIR)/%.o,$(SOURCES))
 
 all : ${NAME}
 
+bonus:
+	make -C bonus/
+
 ${NAME} : ${OBJECTS}
 	@${CC} ${CFLAGS} $(LDFLAGS) ${OBJECTS} -o ${NAME}
 	@echo "\n$(GRN)➾ philo created$(RES)"
@@ -52,9 +51,13 @@ clean :
 	@${RM} ${OBJECTS}
 	@${RM} ${ODIR}
 	@echo "${RED}➾ philo objects deleted${RES}"
+	@make -C bonus/ clean
 
 fclean : clean
 	@${RM} ${NAME}
 	@echo "${RED}➾ philo deleted${RES}"
+	@make -C bonus/ fclean
 
 re : fclean all
+
+.PHONY: bonus
