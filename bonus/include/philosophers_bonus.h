@@ -16,6 +16,7 @@
 # include <fcntl.h> /* For O_* constants */
 # include <pthread.h>
 # include <semaphore.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <stdint.h>
 # include <stdio.h>
@@ -53,11 +54,13 @@ typedef struct s_philo
 	pid_t				pid;
 	pthread_t			philo_thread;
 	int					id;
+	bool				is_full;
+	bool				is_dead;
 	long long			last_meal_time;
 	long long			start_time;
 	int					meals_eaten;
-	bool				full;
 	t_data				*data;
+	sem_t				*philo_sem;
 	sem_t				*forks_sem;
 	sem_t				*dead_sem;
 }						t_philo;
@@ -95,7 +98,8 @@ typedef enum e_errorcode
 	WRONG_CHARS,
 	INVALID_TIME,
 	MALLOC_PHILO,
-	MALLOC_FORKS
+	MALLOC_FORKS,
+	WRONG_PID
 }						t_errorcode;
 
 int						error_handler(t_errorcode error);
@@ -126,8 +130,9 @@ void					wait_philos(t_data *data);
 
 int						philos_init(t_data *data);
 void					dinner(t_data *data);
-void					threads_create(t_data *data);
+void					threads_create(t_philo *philos);
 void					processes_create(t_data *data);
+void					*routine(void *data);
 void					eating(t_philo *philo);
 
 /********************/

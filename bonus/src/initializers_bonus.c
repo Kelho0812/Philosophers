@@ -41,15 +41,24 @@ int	philos_init(t_data *data)
 {
 	int		i;
 	t_philo	*philo;
+	sem_t	*forks;
+	sem_t	*dead;
 	
-
+	sem_unlink(SEM_FORKS);
+	sem_unlink(SEM_DEAD);
+	forks = sem_open(SEM_FORKS, O_CREAT, 0600, data->nbr_philos);
+	sem_close(forks);
+	dead = sem_open(SEM_DEAD, O_CREAT, 0600, 1);
+	sem_close(dead);
 	i = 0;
 	while (i < data->nbr_philos)
 	{
 		philo = data->philos + i;
 		philo->id = i + 1;
-		philo->full = false;
+		philo->is_full = false;
+		philo->is_dead = false;
 		philo->last_meal_time = 0;
+		philo->start_time = 0;
 		philo->meals_eaten = 0;
 		philo->data = data;
 		i++;

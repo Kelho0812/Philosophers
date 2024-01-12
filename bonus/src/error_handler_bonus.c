@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philosophers.h"
+#include "../include/philosophers_bonus.h"
 
 int	error_handler(t_errorcode error)
 {
@@ -29,21 +29,15 @@ int	error_handler(t_errorcode error)
 		printf(RED "Error: Philosophers Malloc Invalid\n" RESET);
 	if (error == MALLOC_FORKS)
 		printf(RED "Error: Forks Malloc Invalid\n" RESET);
+	if (error == WRONG_PID)
+		printf(RED "Error: Forks Malloc Invalid\n" RESET);
 	return (0);
 }
 
 void	ft_exit(t_data *data)
 {
-	int	i;
-
-	i = 0;
-	while (i < data->nbr_philos)
-	{
-		pthread_mutex_destroy(&data->philos[i].philo_mutex);
-		i++;
-	}
-	pthread_mutex_destroy(&data->data_mutex);
-	pthread_mutex_destroy(&data->write_mutex);
+	usleep(700000);
+	sem_unlink(SEM_DEAD);
+	sem_unlink(SEM_FORKS);
 	free(data->philos);
-	free(data->forks);
 }
