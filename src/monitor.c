@@ -54,7 +54,7 @@ bool	all_threads_running(t_mtx *mutex, int *thread_nbr, int philo_nbr)
 
 	result = false;
 	pthread_mutex_lock(mutex);
-	if ((*thread_nbr == philo_nbr))
+	if (*thread_nbr == philo_nbr)
 		result = true;
 	pthread_mutex_unlock(mutex);
 	return (result);
