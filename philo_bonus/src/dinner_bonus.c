@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorteixe  <jorteixe@student.42porto.>      +#+  +:+       +#+        */
+/*   By: jorteixe <jorteixe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:35:40 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/11 11:16:12 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:26:05 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,30 +53,15 @@ void	processes_create(t_data *data)
 
 void	threads_create(t_philo *philos)
 {
-	long long	time_passed;
-
 	sem_unlink(SEM_PHILO);
 	philos->philo_sem = sem_open(SEM_PHILO, O_CREAT, 0600, 1);
 	philos->forks_sem = sem_open(SEM_FORKS, 0);
 	philos->dead_sem = sem_open(SEM_DEAD, 0);
 	set_long_long(philos->philo_sem, &philos->last_meal_time,
 		get_current_time());
-	set_long_long(philos->philo_sem, &philos->start_time,
-		get_current_time());
-	pthread_create(&(philos->philo_thread), NULL, &routine,
-		(philos));
-	while (!get_bool(philos->philo_sem, &philos->is_full)
-		&& !get_bool(philos->philo_sem, &philos->is_dead))
-	{
-		time_passed = get_current_time()
-			- get_long_long(philos->philo_sem,
-				&philos->last_meal_time);
-		if (time_passed > philos->data->time_to_die)
-		{
-			set_bool(philos->philo_sem, &philos->is_dead, true);
-			write_action(DEAD, philos);
-		}
-	}
+	set_long_long(philos->philo_sem, &philos->start_time, get_current_time());
+	pthread_create(&(philos->philo_thread), NULL, &routine, (philos));
+	monitor(philos);
 	pthread_join(philos->philo_thread, NULL);
 	sem_close(philos->philo_sem);
 	return ;

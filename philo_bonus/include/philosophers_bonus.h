@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers_bonus.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorteixe  <jorteixe@student.42porto.>      +#+  +:+       +#+        */
+/*   By: jorteixe <jorteixe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 14:44:47 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/11 11:16:12 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:25:55 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ int						data_init(t_data *data, char **argv, int argc);
 long					ft_atoi_change(const char *str);
 int						ft_isdigit(int n);
 int						num_checker(char **argv);
-void					*monitor(void *data);
 void					write_action(t_status status, t_philo *philo);
 
 /********************/
@@ -134,6 +133,7 @@ void					threads_create(t_philo *philos);
 void					processes_create(t_data *data);
 void					*routine(void *data);
 void					eating(t_philo *philo);
+void					monitor(void *data);
 
 /********************/
 /*	GETTERS/SETTERS	*/
