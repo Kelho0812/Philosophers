@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 09:30:53 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/16 11:19:00 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/16 11:46:02 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ int						data_init(t_data *data, char **argv, int argc);
 long					ft_atoi_change(const char *str);
 int						ft_isdigit(int n);
 int						num_checker(char **argv);
-void					*monitor(void *data);
 void					write_action(t_status status, t_philo *philo);
 
 /********************/
@@ -144,6 +143,8 @@ void					*routine_one(void *data);
 bool					all_threads_running(t_mtx *mutex, int *thread_nbr,
 							int philo_nbr);
 void					increase_threads_running_nbr(t_mtx *mutex, int *value);
+void					*monitor(void *data);
+void					actual_monitor(t_data *data);
 
 /********************/
 /*	GETTERS/SETTERS	*/

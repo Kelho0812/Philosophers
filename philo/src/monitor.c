@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/10 09:44:47 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/15 14:52:51 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/16 11:46:39 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,13 @@ static bool	check_dead(t_philo *philo);
 
 void	*monitor(void *table)
 {
-	int			i;
-	t_data		*data;
-	long long	time_passed;
+	t_data	*data;
 
 	data = (t_data *)table;
 	while (!all_threads_running(&data->data_mutex, &data->nbr_threads_running,
 			data->nbr_philos))
 		;
-	while (!dinner_finished(data))
-	{
-		i = 0;
-		data->full_count = 0;
-		while (i < data->nbr_philos && !dinner_finished(data))
-		{
-			if (check_dead(&data->philos[i]))
-			{
-				time_passed = get_current_time()
-					- get_long_long(&data->data_mutex, &data->start_time);
-				set_bool(&data->data_mutex, &data->finish, true);
-				printf(RED "%lld %d died\n" RESET, time_passed,
-					data->philos->id);
-			}
-			if (get_bool(&data->philos[i].philo_mutex, &data->philos[i].full))
-				data->full_count++;
-			i++;
-		}
-		if (data->full_count == data->nbr_philos)
-			set_bool(&data->data_mutex, &data->finish, true);
-	}
+	actual_monitor(data);
 	return (NULL);
 }
 
@@ -80,4 +58,32 @@ static bool	check_dead(t_philo *philo)
 	if (time_passed >= time_to_die)
 		return (true);
 	return (false);
+}
+
+void	actual_monitor(t_data *data)
+{
+	int			i;
+	long long	time_passed;
+
+	while (!dinner_finished(data))
+	{
+		i = 0;
+		data->full_count = 0;
+		while (i < data->nbr_philos && !dinner_finished(data))
+		{
+			if (check_dead(&data->philos[i]))
+			{
+				time_passed = get_current_time()
+					- get_long_long(&data->data_mutex, &data->start_time);
+				set_bool(&data->data_mutex, &data->finish, true);
+				printf(RED "%lld %d died\n" RESET, time_passed,
+					data->philos->id);
+			}
+			if (get_bool(&data->philos[i].philo_mutex, &data->philos[i].full))
+				data->full_count++;
+			i++;
+		}
+		if (data->full_count == data->nbr_philos)
+			set_bool(&data->data_mutex, &data->finish, true);
+	}
 }
