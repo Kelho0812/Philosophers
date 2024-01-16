@@ -13,11 +13,11 @@ CC = cc
 
 CFLAGS = -Werror -Wall -Wextra -g -pthread
 
-LDFLAGS = -fsanitize=thread
+LDFLAGS = -fsanitize=address
 
 RM = rm -rf
 
-SDIR := phil/src
+SDIR := src
 ODIR := obj
 
 SOURCES := main.c \
@@ -26,7 +26,8 @@ SOURCES := main.c \
 			utils.c \
 			dinner.c \
 			getters_setters.c\
-			monitor.c
+			monitor.c\
+			utils2.c
 OBJECTS := $(patsubst %.c,$(ODIR)/%.o,$(SOURCES))
 
 
@@ -40,7 +41,6 @@ $(ODIR)/%.o: $(SDIR)/%.c | $(ODIR)
 	@$(CC) $(CFLAGS) $(LDFLAGS) -c -o $@ $<
 	@echo "${GRN}➾ $@ created ${RES}"
 
-
 $(ODIR):
 	@mkdir -p $@	
 
@@ -48,12 +48,10 @@ clean :
 	@${RM} ${OBJECTS}
 	@${RM} ${ODIR}
 	@echo "${RED}➾ philo objects deleted${RES}"
-	@make -C bonus/ clean
 
 fclean : clean
 	@${RM} ${NAME}
 	@echo "${RED}➾ philo deleted${RES}"
-	@make -C bonus/ fclean
 
 re : fclean all
 
