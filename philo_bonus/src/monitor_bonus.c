@@ -18,7 +18,6 @@ void	monitor(void *data)
 	t_philo		*philos;
 
 	philos = (t_philo *)data;
-	
 	time_passed = get_current_time() - get_long_long(philos->philo_sem,
 			&philos->last_meal_time);
 	if (time_passed > philos->data->time_to_die)
@@ -26,7 +25,6 @@ void	monitor(void *data)
 		sem_wait(philos->dead_sem);
 		set_bool(philos->philo_sem, &philos->is_dead, true);
 		printf(RED"%lld %d died\n"RESET, time_passed, philos->id);
-		// write_action(DEAD, philos);
 		return ;
 	}
 }
