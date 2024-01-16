@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils_bonus.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorteixe  <jorteixe@student.42porto.>      +#+  +:+       +#+        */
+/*   By: jorteixe <jorteixe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:35:40 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/11 11:16:12 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/16 12:01:05 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/philosophers_bonus.h"
+#include "../include/philosophers_bonus.h"
 
 long	ft_atoi_change(const char *str)
 {
@@ -64,8 +64,7 @@ long long	get_current_time(void)
 	long long		milliseconds;
 
 	gettimeofday(&tv, NULL);
-	milliseconds = (long long)(tv.tv_sec) *1000 + (long long)(tv.tv_usec)
-		/ 1000;
+	milliseconds = (long long)tv.tv_sec * 1000 + (long long)(tv.tv_usec) / 1000;
 	return (milliseconds);
 }
 

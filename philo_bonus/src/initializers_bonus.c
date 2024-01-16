@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initializers_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorteixe  <jorteixe@student.42porto.>      +#+  +:+       +#+        */
+/*   By: jorteixe <jorteixe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:35:40 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/11 11:16:12 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/16 12:36:06 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,11 @@ int	philos_init(t_data *data)
 	t_philo	*philo;
 	sem_t	*forks;
 	sem_t	*dead;
-	
+
 	sem_unlink(SEM_FORKS);
 	sem_unlink(SEM_DEAD);
 	forks = sem_open(SEM_FORKS, O_CREAT, 0600, data->nbr_philos);
-	sem_close(forks);
 	dead = sem_open(SEM_DEAD, O_CREAT, 0600, 1);
-	sem_close(dead);
 	i = 0;
 	while (i < data->nbr_philos)
 	{
@@ -63,5 +61,7 @@ int	philos_init(t_data *data)
 		philo->data = data;
 		i++;
 	}
+	sem_close(forks);
+	sem_close(dead);
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handler_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorteixe  <jorteixe@student.42porto.>      +#+  +:+       +#+        */
+/*   By: jorteixe <jorteixe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/11 10:35:40 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/11 11:16:12 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/16 12:46:48 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ int	error_handler(t_errorcode error)
 	if (error == MALLOC_FORKS)
 		printf(RED "Error: Forks Malloc Invalid\n" RESET);
 	if (error == WRONG_PID)
-		printf(RED "Error: Forks Malloc Invalid\n" RESET);
+		printf(RED "Error: PID Error\n" RESET);
 	return (0);
 }
 
 void	ft_exit(t_data *data)
 {
-	usleep(700000);
-	sem_unlink(SEM_DEAD);
-	sem_unlink(SEM_FORKS);
+	ft_usleep(790);
 	free(data->philos);
+	sem_unlink(SEM_FORKS);
+	sem_unlink(SEM_DEAD);
 }
