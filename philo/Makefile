@@ -13,7 +13,7 @@ CC = cc
 
 CFLAGS = -Werror -Wall -Wextra -g -pthread
 
-LDFLAGS = -fsanitize=address
+LDFLAGS = -fsanitize=thread
 
 RM = rm -rf
 
