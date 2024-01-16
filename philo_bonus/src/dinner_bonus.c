@@ -89,7 +89,7 @@ void	*routine(void *data)
 
 	philo = (t_philo *)data;
 	set_long_long(philo->philo_sem, &philo->last_meal_time, get_current_time());
-	while (!get_bool(philo->philo_sem, &philo->is_dead))
+	while (!get_bool(philo->philo_sem, &philo->is_dead) && !get_bool(philo->philo_sem, &philo->is_full))
 	{
 		write_action(THINKING, philo);
 		eating(philo);
