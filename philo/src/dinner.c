@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 09:30:51 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/15 14:52:07 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/16 11:14:14 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,12 @@ void	dinner(t_data *data)
 	if (data->meals_to_eat == 0)
 		return ;
 	else if (data->nbr_philos == 1)
-		;
+	{
+		pthread_create(&(data->philos->thread), NULL, &routine_one,
+			data->philos);
+		pthread_join(data->philos->thread, NULL);
+		return ;
+	}
 	else
 		threads_create(data);
 	set_long_long(&data->data_mutex, &data->start_time, get_current_time());
@@ -72,6 +77,7 @@ void	threads_create(t_data *data)
 		pthread_create(&(data->philos[i].thread), NULL, &routine,
 			&(data->philos[i]));
 		i++;
+		//
 	}
 }
 
@@ -105,13 +111,12 @@ void	write_action(t_status status, t_philo *philo)
 			&philo->data->start_time);
 	// if (philo->full)
 	// 	return ;
-
 	pthread_mutex_lock(&philo->data->write_mutex);
 	if (!dinner_finished(philo->data))
 	{
 		if (status == TAKE_FIRST_FORK || status == TAKE_SECOND_FORK)
-			printf(WHT "%lld" YEL " %d has taken a fork\n" RESET,
-				time_passed, philo->id);
+			printf(WHT "%lld" YEL " %d has taken a fork\n" RESET, time_passed,
+				philo->id);
 		else if (status == SLEEPING)
 			printf(WHT "%lld" RESET " %d is sleeping\n", time_passed,
 				philo->id);
@@ -125,4 +130,4 @@ void	write_action(t_status status, t_philo *philo)
 			printf(RED "%lld %d died\n" RESET, time_passed, philo->id);
 	}
 	pthread_mutex_unlock(&philo->data->write_mutex);
-	}
+}
