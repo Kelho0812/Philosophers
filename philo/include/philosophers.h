@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jorteixe  <jorteixe@student.42porto.>      +#+  +:+       +#+        */
+/*   By: jorteixe <jorteixe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 09:30:53 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/09 21:37:09 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/16 11:19:00 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ void					dinner(t_data *data);
 void					threads_create(t_data *data);
 void					threads_join(t_data *data);
 void					eating(t_philo *philo);
+void					*routine_one(void *data);
 
 /********************/
 /*		MONITOR		*/
