@@ -6,7 +6,7 @@
 /*   By: jorteixe <jorteixe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 09:30:51 by jorteixe          #+#    #+#             */
-/*   Updated: 2024/01/16 11:14:14 by jorteixe         ###   ########.fr       */
+/*   Updated: 2024/01/16 11:28:54 by jorteixe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ void	*routine(void *data)
 		&philo->data->nbr_threads_running);
 	while (!dinner_finished(philo->data))
 	{
-		// if (philo->full)
-		// 	break ;
 		write_action(THINKING, philo);
 		ft_usleep(1);
 		eating(philo);
@@ -77,14 +75,11 @@ void	threads_create(t_data *data)
 		pthread_create(&(data->philos[i].thread), NULL, &routine,
 			&(data->philos[i]));
 		i++;
-		//
 	}
 }
 
 void	eating(t_philo *philo)
 {
-	// if (get_bool(&philo->philo_mutex, &philo->full))
-	// 	return ;
 	pthread_mutex_lock(&philo->first_fork->fork);
 	write_action(TAKE_FIRST_FORK, philo);
 	pthread_mutex_lock(&philo->second_fork->fork);
@@ -101,33 +96,4 @@ void	eating(t_philo *philo)
 	}
 	pthread_mutex_unlock(&philo->second_fork->fork);
 	pthread_mutex_unlock(&philo->first_fork->fork);
-}
-
-void	write_action(t_status status, t_philo *philo)
-{
-	long long	time_passed;
-
-	time_passed = get_current_time() - get_long_long(&philo->data->data_mutex,
-			&philo->data->start_time);
-	// if (philo->full)
-	// 	return ;
-	pthread_mutex_lock(&philo->data->write_mutex);
-	if (!dinner_finished(philo->data))
-	{
-		if (status == TAKE_FIRST_FORK || status == TAKE_SECOND_FORK)
-			printf(WHT "%lld" YEL " %d has taken a fork\n" RESET, time_passed,
-				philo->id);
-		else if (status == SLEEPING)
-			printf(WHT "%lld" RESET " %d is sleeping\n", time_passed,
-				philo->id);
-		else if (status == THINKING)
-			printf(WHT "%lld" RESET " %d is thinking\n", time_passed,
-				philo->id);
-		else if (status == EATING)
-			printf(WHT "%lld" CYN " %d is eating\n" RESET, time_passed,
-				philo->id);
-		else if (status == DEAD)
-			printf(RED "%lld %d died\n" RESET, time_passed, philo->id);
-	}
-	pthread_mutex_unlock(&philo->data->write_mutex);
 }
