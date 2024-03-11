@@ -28,7 +28,4 @@ Contributions are welcome! If you find any issues or have suggestions for improv
 **License:**
 This project is licensed under the [MIT License](LICENSE).
 
-**Acknowledgments:**
-Thanks to contributors and developers who have contributed to this project.
-
 Explore and experiment with the dining philosophers problem using this simulation!
